@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // الحالة الأولية (State)
     let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+    let editingId = null;
 
     // تهيئة التطبيق
     init();
@@ -35,6 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 300); // Matches CSS transition speed
         document.body.style.overflow = ''; // إعادة التمرير
         expenseForm.reset();
+
+        // Reset editing state
+        editingId = null;
+        const titleEl = document.querySelector('.modal-header h2');
+        if (titleEl) titleEl.textContent = 'إضافة مصروف جديد';
     }
 
     function formatCurrency(amount) {
@@ -67,15 +73,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const newExpense = {
-            id: Date.now(), // معرف فريد
+            id: editingId ? editingId : Date.now(), // Use existing ID if editing
             amount: amount,
             reason: reason,
-            date: new Date().toISOString()
+            date: editingId ? expenses.find(e => e.id === editingId).date : new Date().toISOString()
         };
 
-        expenses.unshift(newExpense); // إضافة في البداية
+        if (editingId) {
+            // Update existing expense
+            const index = expenses.findIndex(e => e.id === editingId);
+            if (index !== -1) {
+                expenses[index] = newExpense;
+            }
+        } else {
+            // Add new expense
+            expenses.unshift(newExpense);
+        }
+
         saveExpenses();
         closeModal();
+    }
+
+    function editExpense(id) {
+        const expense = expenses.find(e => e.id === id);
+        if (expense) {
+            document.getElementById('amount').value = expense.amount;
+            document.getElementById('reason').value = expense.reason;
+            editingId = id;
+
+            // Update modal title logic could go here or via separate element, 
+            // but for simplicity we'll just open the modal.
+            // Ideally change title to "تعديل مصروف"
+            const titleEl = document.querySelector('.modal-header h2');
+            if (titleEl) titleEl.textContent = 'تعديل مصروف';
+
+            openModal();
+        }
     }
 
     function deleteExpense(id) {
@@ -111,6 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${expense.reason}</td>
                 <td class="amount">${formatCurrency(expense.amount)}</td>
                 <td>
+                    <button class="btn-icon edit" data-id="${expense.id}" aria-label="تعديل">
+                        <i class="las la-pen"></i>
+                    </button>
                     <button class="btn-icon delete" data-id="${expense.id}" aria-label="حذف">
                         <i class="las la-trash"></i>
                     </button>
@@ -125,6 +161,13 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', () => {
                 const id = parseInt(btn.getAttribute('data-id'));
                 deleteExpense(id);
+            });
+        });
+
+        document.querySelectorAll('.edit').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = parseInt(btn.getAttribute('data-id'));
+                editExpense(id);
             });
         });
     }

@@ -299,6 +299,11 @@ header p {
     background: rgba(239, 68, 68, 0.1);
 }
 
+.btn-icon.edit:hover {
+    color: var(--primary-color);
+    background: rgba(59, 130, 246, 0.1);
+}
+
 /* Table */
 .table-container {
     overflow-x: auto;

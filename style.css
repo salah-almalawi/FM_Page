@@ -1,0 +1,662 @@
+/* Global Styles & Variables */
+:root {
+    --bg-color: #0f172a;
+    --text-color: #e2e8f0;
+    --primary-color: #3b82f6;
+    /* Blue-500 */
+    --primary-glow: rgba(59, 130, 246, 0.5);
+    --secondary-color: #64748b;
+    /* Slate-500 */
+    --accent-color: #8b5cf6;
+    /* Violet-500 */
+    --danger-color: #ef4444;
+    /* Red-500 */
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    /* Slate-800 with opacity */
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --font-main: 'Cairo', sans-serif;
+    --transition-speed: 0.3s;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    /* Align top for scroll */
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.6;
+}
+
+/* Background Blobs for Atmosphere */
+.background-blobs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    animation: move 20s infinite alternate;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--primary-color);
+    top: -100px;
+    left: -100px;
+}
+
+.blob-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--accent-color);
+    bottom: -50px;
+    right: -50px;
+    animation-duration: 25s;
+}
+
+.blob-3 {
+    width: 250px;
+    height: 250px;
+    background: var(--danger-color);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-duration: 30s;
+    opacity: 0.2;
+}
+
+@keyframes move {
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(20px, -20px) scale(1.1);
+    }
+}
+
+/* Glassmorphism Classes */
+.glass-panel,
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 16px;
+}
+
+/* Main Container */
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 5rem;
+    /* Space for FAB */
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header h1 i {
+    color: var(--primary-color);
+    -webkit-text-fill-color: var(--primary-color);
+}
+
+header p {
+    color: var(--secondary-color);
+}
+
+/* Summary Cards */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform var(--transition-speed);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.card h3 {
+    font-size: 1rem;
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+}
+
+.card p {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Transactions Section */
+.transactions-section {
+    margin-top: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all var(--transition-speed);
+    font-size: 1rem;
+}
+
+/* Add Button (Default Desktop) */
+#add-btn.desktop-btn {
+    display: inline-flex;
+}
+
+/* Floating Action Button (Mobile) */
+.fab-btn {
+    display: none;
+    /* Hidden on desktop by default unless we want it */
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    /* Left for RTL */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.6);
+    z-index: 90;
+    font-size: 1.5rem;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+    /* Blue-600 */
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.btn-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-glow::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity var(--transition-speed), transform var(--transition-speed);
+}
+
+.btn-glow:hover::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #fff;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: color var(--transition-speed), background var(--transition-speed);
+}
+
+.btn-icon.delete:hover {
+    color: var(--danger-color);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* Table */
+.table-container {
+    overflow-x: auto;
+    padding: 1rem;
+    /* max-height: 400px; Remove fixed height for mobile flow usually better */
+    overflow-y: visible;
+    /* Let page scroll */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 1rem;
+    text-align: right;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+th {
+    font-weight: 600;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.amount {
+    font-weight: 700;
+    color: #fff;
+    font-family: monospace;
+    /* For better number alignment */
+    font-size: 1.1rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--secondary-color);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-speed);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    width: 90%;
+    max-width: 500px;
+    padding: 2rem;
+    transform: translateY(20px);
+    transition: transform var(--transition-speed);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.modal-overlay.active .modal {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: #fff;
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem;
+    /* Larger touch area */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Custom Checkbox/Radio if needed later */
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ================= Mobile & Responsive Styles ================= */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 0.5rem;
+        /* Very tight padding */
+        border-radius: 0;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .glass-panel.container {
+        background: transparent;
+        backdrop-filter: none;
+        border: none;
+    }
+
+    header {
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+        /* Smaller title */
+        margin-bottom: 0.1rem;
+    }
+
+    header p {
+        font-size: 0.8rem;
+    }
+
+    /* Transform Table to Cards on Mobile */
+    .table-container {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        overflow: visible;
+    }
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    thead {
+        display: none;
+        /* Hide table headers */
+    }
+
+    tr {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        margin-bottom: 0.5rem;
+        /* Tighter card spacing */
+        padding: 0.6rem;
+        /* Tighter internal card padding */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    tr:last-child {
+        margin-bottom: 4rem;
+        /* Space for FAB */
+    }
+
+    td {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 0.3rem 0;
+        /* Minimal row padding */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        font-size: 0.8rem;
+        /* Smaller text */
+    }
+
+    td:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    /* Add labels via CSS */
+    td:nth-of-type(1)::before {
+        content: "التاريخ";
+        color: var(--secondary-color);
+        font-size: 0.75rem;
+    }
+
+    td:nth-of-type(2)::before {
+        content: "السبب";
+        color: var(--secondary-color);
+        font-size: 0.75rem;
+    }
+
+    td:nth-of-type(3)::before {
+        content: "المبلغ";
+        color: var(--secondary-color);
+        font-size: 0.75rem;
+    }
+
+    td:nth-of-type(4)::before {
+        content: "إجراءات";
+        color: var(--secondary-color);
+        font-size: 0.75rem;
+    }
+
+    /* Hide redundant action label if clear */
+    td:nth-of-type(4)::before {
+        display: none;
+    }
+
+    td:nth-of-type(4) {
+        justify-content: flex-end;
+        padding-top: 0.2rem;
+    }
+
+    .btn-icon {
+        font-size: 1rem;
+        /* Smaller icons */
+        padding: 2px;
+    }
+
+    /* FAB Implementation */
+    #add-btn {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 1.5rem;
+        right: auto;
+        border-radius: 50%;
+        width: 45px;
+        /* Even smaller FAB */
+        height: 45px;
+        padding: 0;
+        justify-content: center;
+        font-size: 1.1rem;
+        z-index: 90;
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
+    }
+
+    #add-btn span {
+        display: none;
+    }
+
+    #add-btn i {
+        margin: 0;
+        font-size: 1.3rem;
+    }
+
+    .summary-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        /* Very tight gap */
+        margin-bottom: 1rem;
+    }
+
+    .card {
+        padding: 0.8rem;
+        /* Compact card */
+    }
+
+    .card h3 {
+        font-size: 0.75rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .card p {
+        font-size: 1.1rem;
+        /* Smaller total amount */
+    }
+
+    .section-header h2 {
+        font-size: 1rem;
+        /* Smaller section title */
+    }
+}
